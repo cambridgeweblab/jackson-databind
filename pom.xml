@@ -24,6 +24,33 @@
     <tag>jackson-databind-2.8.2</tag>
   </scm>
 
+  <distributionManagement>
+      <repository>
+          <id>maven-s3-release-repo</id>
+          <name>AWS Release Repository</name>
+          <url>s3://mvnrepository.ucles.org.uk/releases</url>
+      </repository>
+      <snapshotRepository>
+          <id>maven-s3-snapshot-repo</id>
+          <name>AWS Snapshot Repository</name>
+          <url>s3://mvnrepository.ucles.org.uk/snapshots</url>
+      </snapshotRepository>
+  </distributionManagement>
+
+  <repositories>
+      <repository>
+          <id>maven-s3-release-repo</id>
+          <name>AWS Release Repository</name>
+          <url>s3://mvnrepository.ucles.org.uk/releases</url>
+      </repository>
+      <repository>
+          <id>maven-s3-snapshot-repo</id>
+          <name>AWS Snapshot Repository</name>
+          <url>s3://mvnrepository.ucles.org.uk/snapshots</url>
+          <snapshots/>
+      </repository>
+  </repositories>
+
   <properties>
     <!-- With Jackson 2.8 we will require JDK 7 (except for annotations/streaming),
          and new language features (diamond pattern) may be used.
@@ -90,7 +117,26 @@
   </dependencies>
 
   <build>
-     <plugins>
+    <extensions>
+        <extension>
+            <groupId>org.springframework.build</groupId>
+            <artifactId>aws-maven</artifactId>
+            <version>5.0.0.RELEASE</version>
+        </extension>
+    </extensions>
+  <plugins>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <executions>
+              <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                      <goal>jar</goal>
+                  </goals>
+              </execution>
+          </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <version>${version.plugin.surefire}</version>
